@@ -38,8 +38,11 @@ function proxyCacheMultiFile(req, callback) {
     var headers
     for(var i=0, len = results.length; i < len; i++) {
       if (i < 1) headers = results[i].headers
+      console.log(i, results[i].headers)
+      console.log(i, results[i].body.substr(0,50) + '...')
       objMap[results[i].url] = results[i]
     }
+    process.exit(1)
     var orderedResults = ''
     for(i=0, len = requests.length; i < len; i++) {
       if (i > 0) orderedResults += "\n"
