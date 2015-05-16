@@ -30,7 +30,7 @@ function proxyCacheMultiFile(req, callback) {
   var requests = []
   req.url.forEach(function(elem) {
     requests.push({ url: elem, gzip: false, returnUrl: true })
-  });
+  })
 
   async.map(requests, proxyCacheFile, function(err, results){
     if (err) throw err
@@ -46,7 +46,7 @@ function proxyCacheMultiFile(req, callback) {
       var pack = objMap[requests[i].url]
       orderedResults += pack.body
     }
-    callback(null, { headers: headers, data: orderedResults})
+    callback(null, { headers: headers, body: orderedResults})
   })
 }
 

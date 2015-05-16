@@ -14,8 +14,5 @@ process.on('uncaughtException', function (err) {
 proxyCacheMultiFile(urls, function(err, data) {
 	if (err) throw err
 	console.log('headers:', data.headers)
-	var parts = data.body.split("\n")
-	for (var i = 0; i < parts.length; i++) {
-		console.log('i:', i, parts[i])
-	}
+	console.log('body:',    data.body)
 })
