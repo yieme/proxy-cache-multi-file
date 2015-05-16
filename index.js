@@ -35,9 +35,10 @@ function proxyCacheMultiFile(req, callback) {
   async.map(requests, proxyCacheFile, function(err, results){
     if (err) throw err
     var objMap = {}
+    var headers
     for(var i=0, len = results.length; i < len; i++) {
-      var headers = results[i].headers
-      if (headers.code) return callback(results[i].body) // error encountered
+      headers = results[i].headers
+      if (headers.code) return callback(null, results[i]) // error encountered
       objMap[results[i].url] = results[i]
     }
     var orderedResults = ''
