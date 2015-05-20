@@ -9,11 +9,14 @@ var _              = require('lodash')
 var async          = require('async');
 var proxyCacheFile = require('proxy-cache-file')
 var ProxyCacheMultiFileError = require('make-error')('ProxyCacheMultiFileError')
-var options = {}
+var options = {
+  dir:       './tmp',
+  logRequest: false
+}
 
 function proxyCacheMultiFile(req, callback) {
   if ('string' === typeof req) req = { url: [req] }
-  if (_.isArray(req)) req = { url: req }
+  if (_.isArray(req))          req = { url: req }
   req = req || {}
   if (!_.isArray(req.url)) {
     if (_.isObject(req)) {
@@ -24,7 +27,12 @@ function proxyCacheMultiFile(req, callback) {
     if (!_.isFunction(callback)) {
       throw new ProxyCacheMultiFileError('Array of request URL\'s required and invalid callback')
     }
-    callback(new ProxyCacheMultiFileError('Arry of request URL\'s required'))
+    callback(new ProxyCacheMultiFileError('Array of request URL\'s required'))
+  }
+
+  if (options.logRequest) {
+    var logger = (req.locals && req.locals._log) ? req.locals._log : console
+    logger.info('proxyCacheMultiFile:', req.url)
   }
 
   var requests = []

@@ -122,6 +122,10 @@ Then run again cache hit returns:
 
 Data is returned as a Buffer during non-cached proxy requests
 
+## To Do:
+
+- Explore replacing ```proxy-cache-file``` with [superagent](https://www.npmjs.com/package/superagent)
+
 ## Rights
 
 Copyright (C) 2015 by Yieme, License: MIT
