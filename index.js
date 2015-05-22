@@ -55,8 +55,11 @@ function proxyCacheMultiFile(req, callback) {
     var objMap = {}
     var headers
     for(var i=0, len = results.length; i < len; i++) {
+      var pak = results[i]
+      var tmp = ', url: ' + pak.url + ', pak: ' + typeof pak
       headers = results[i].headers
-      if (headers.code) return callback(null, results[i]) // error encountered
+      options.logger.debug('map: ' + i + ', headers: ' + JSON.stringify(headers) + tmp)
+      if (headers.code && headers.code != 200) return callback(null, results[i]) // error encountered
       objMap[results[i].url] = results[i]
     }
     var orderedResults = ''
