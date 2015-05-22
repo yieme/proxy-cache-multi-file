@@ -9,9 +9,16 @@ var _              = require('lodash')
 var async          = require('async');
 var proxyCacheFile = require('proxy-cache-file')
 var ProxyCacheMultiFileError = require('make-error')('ProxyCacheMultiFileError')
+var logger      = {
+  info:  function(msg) { console.log('info:', msg) },
+  debug: function(msg) { console.log('debug:', msg) },
+  warn:  function(msg) { console.warn('warn:', msg) },
+  error: function(msg) { console.error('error:', msg) },
+  log:   console.log,
+}
 var options = {
-  dir:       './tmp',
-  logRequest: false
+  dir:    './tmp',
+  logger: logger
 }
 
 function proxyCacheMultiFile(req, callback) {
@@ -30,15 +37,18 @@ function proxyCacheMultiFile(req, callback) {
     callback(new ProxyCacheMultiFileError('Array of request URL\'s required'))
   }
 
-  if (options.logRequest) {
-    var logger = (req.locals && req.locals._log) ? req.locals._log : console
-    logger.info('proxyCacheMultiFile:', req.url)
-  }
+  options.logger.debug('proxyCacheMultiFile: ' + req.url)
 
   var requests = []
   req.url.forEach(function(elem) {
     requests.push({ url: elem, gzip: false, returnUrl: true })
   })
+
+  if (requests.length == 1) {
+    var request = requests[0]
+    request.asStream = true
+    return proxyCacheFile(request, callback)
+  }
 
   async.map(requests, proxyCacheFile, function(err, results){
     if (err) throw err
