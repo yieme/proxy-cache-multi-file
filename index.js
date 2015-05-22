@@ -28,7 +28,7 @@ function proxyCacheMultiFile(req, callback) {
   if (!_.isArray(req.url)) {
     if (_.isObject(req)) {
       options = req
-      if (req.dir) proxyCacheFile({ dir: req.dir }) // pass-thru config
+      if (req.dir) proxyCacheFile(req) // pass-thru config
       return proxyCacheMultiFile
     }
     if (!_.isFunction(callback)) {
