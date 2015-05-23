@@ -22,6 +22,13 @@ var options = {
 }
 
 function proxyCacheMultiFile(req, callback) {
+  function callbackError(param) {
+    param.in  = (param.in) ? 'proxyCacheMultiFile' + '.' + param.in : 'proxyCacheMultiFile'
+    param.url = req.url
+    logger.warn(JSON.stringify(param))
+    return callback('{ "code": 404, "error": "Not Found" }')
+  }
+
   if ('string' === typeof req) req = { url: [req] }
   if (_.isArray(req))          req = { url: req }
   req = req || {}
@@ -34,7 +41,7 @@ function proxyCacheMultiFile(req, callback) {
     if (!_.isFunction(callback)) {
       throw new ProxyCacheMultiFileError('Array of request URL\'s required and invalid callback')
     }
-    callback(new ProxyCacheMultiFileError('Array of request URL\'s required'))
+    callbackError({ err: 'Array of request URL\'s required' })
   }
 
   options.logger.debug('proxyCacheMultiFile: ' + req.url)
