@@ -1,6 +1,6 @@
 {
   "name": "proxy-cache-multi-file",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Proxy and cache multiple files and related headers",
   "main": "index.js",
   "scripts": {
