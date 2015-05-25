@@ -26,7 +26,7 @@ function proxyCacheMultiFile(req, callback) {
     param.in  = (param.in) ? 'proxyCacheMultiFile' + '.' + param.in : 'proxyCacheMultiFile'
     param.url = req.url
     logger.warn(JSON.stringify(param))
-    return callback('{ "code": 404, "error": "Not Found" }')
+    return callback(null, { headers: { code: 404 }, body: '{ "error": "Not Found" }' })
   }
 
   if ('string' === typeof req) req = { url: [req] }
